@@ -1,0 +1,29 @@
+<!-- Local rules -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<group name="local_rules,">
+
+  <!-- Custom: SSH Brute Force from internal attacker network -->
+  <rule id="100001" level="12">
+    <if_matched_sid>5760</if_matched_sid>
+    <srcip>192.168.56.0/24</srcip>
+    <description>Custom SOC Lab: SSH brute force detected from internal attacker network</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+    <group>authentication_failures,pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+
+  <!-- Custom: Successful login after brute force -->
+  <rule id="100002" level="15">
+    <if_matched_sid>5760</if_matched_sid>
+    <if_sid>5715</if_sid>
+    <description>Custom SOC Lab: Successful SSH login after brute force - possible compromise!</description>
+    <mitre>
+      <id>T1110</id>
+      <id>T1078</id>
+    </mitre>
+    <group>authentication_failures,authentication_success,</group>
+  </rule>
+
+</group>
